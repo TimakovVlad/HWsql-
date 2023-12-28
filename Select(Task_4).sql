@@ -25,5 +25,12 @@ SELECT Альбомы.Название AS Название_альбома, COUNT
 FROM Альбомы
 LEFT JOIN Треки ON Альбомы.Альбом_id = Треки.Альбом_id
 GROUP BY Альбомы.Альбом_id, Альбомы.Название
-ORDER BY Количество_треков
-LIMIT 1;
+HAVING COUNT(Треки.Трек_id) = (
+    SELECT COUNT(Треки.Трек_id)
+    FROM Альбомы
+    LEFT JOIN Треки ON Альбомы.Альбом_id = Треки.Альбом_id
+    GROUP BY Альбомы.Альбом_id
+    ORDER BY COUNT(Треки.Трек_id)
+    LIMIT 1
+);
+
